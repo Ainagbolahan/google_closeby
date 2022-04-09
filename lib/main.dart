@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_closeby/screens/landing_page.dart';
+import 'package:provider/provider.dart';
+
+import 'models/interests_data.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (BuildContext context) => InterestsData(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LandingPage(),
+      home: LandingPage(),
     );
   }
 }

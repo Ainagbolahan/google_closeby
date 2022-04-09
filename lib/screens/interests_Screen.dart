@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_closeby/widgets/buttons.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 import '../models/interests_class.dart';
+import '../models/interests_data.dart';
+import 'goal_select.dart';
 
 class InterestScreen extends StatefulWidget {
   const InterestScreen({
@@ -64,6 +67,7 @@ class _InterestScreenState extends State<InterestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String name = " ";
     return Scaffold(
       key: _key,
       backgroundColor: Color(0Xfff5f7fb),
@@ -152,6 +156,9 @@ class _InterestScreenState extends State<InterestScreen> {
                       border: InputBorder.none,
                       labelText: 'FIRST NAME',
                       hintText: 'Enter Your First Name'),
+                  onChanged: (newText) {
+                    name = newText;
+                  },
                 ),
                 Divider(),
                 TextField(
@@ -205,7 +212,18 @@ class _InterestScreenState extends State<InterestScreen> {
                   onSaved: (val) => print(val),
                 ),
                 ContinueButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<InterestsData>(context, listen: false)
+                        .addInterests(name!);
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => GoalSelect(
+                              context: context,
+                              buttonType: ContinueButton(
+                                onPressed: () {},
+                              ),
+                            )));
+                  },
                 )
               ],
             ),
@@ -225,7 +243,7 @@ class _InterestScreenState extends State<InterestScreen> {
           ),
           label: Text(company.name),
           selectedColor: Colors.white,
-          backgroundColor: Color(0XFFF5F7FB),
+          backgroundColor: const Color(0XFFF5F7FB),
           labelStyle: TextStyle(color: Colors.black),
           selected: _filters!.contains(company.name),
           onSelected: (bool selected) {
